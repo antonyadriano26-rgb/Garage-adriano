@@ -13,7 +13,7 @@ jobs:
 
       - name: Décompresser le projet
         run: |
-          mkdir -p projet
+          mkdir projet
           unzip -q Garage_Adriano_Application_V3-3.zip -d projet
 
       - name: Installer Java 17
@@ -22,20 +22,19 @@ jobs:
           distribution: temurin
           java-version: '17'
 
+      - name: Installer Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
       - name: Construire l'APK
         run: |
-          GRADLEW=$(find projet -name gradlew -type f | head -n 1)
-          if [ -z "$GRADLEW" ]; then
-            echo "gradlew introuvable"
-            exit 1
-          fi
-          chmod +x "$GRADLEW"
-          cd "$(dirname "$GRADLEW")"
-          ./gradlew assembleDebug --no-daemon
+          cd projet
+          find . -name build.gradle -o -name build.gradle.kts
+          gradle assembleDebug --no-daemon
 
       - name: Récupérer l'APK
         uses: actions/upload-artifact@v4
         with:
           name: Garage-Adriano-APK
-          path: |
-            projet/**/build/outputs/apk/debug/*.apk
+          path: projet/**/build/outputs/apk/debug/*.apk
