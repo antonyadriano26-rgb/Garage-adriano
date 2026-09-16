@@ -27,7 +27,7 @@ jobs:
           gradle-version: '8.9'
 
       - name: Construire l'APK
-        working-directory: projet
+        working-directory: projet/Garage_Adriano_Application_V3-3.4
         run: gradle assembleDebug --no-daemon
 
       - name: Récupérer l'APK
